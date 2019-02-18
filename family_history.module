@@ -5,7 +5,7 @@
 function family_history_menu() {
   $items = array();
   $items['family_history/form'] = array(
-    'title' => t('Family Form'),
+    'title' => t('Family Form1'),
     'page callback' => 'family_history_form',
     'access arguments' => array('access content'),
     'description' => t('Family History Form for Drupal 7'),
@@ -43,39 +43,267 @@ function family_history_form1($form_state) {
     '#collapsed' => FALSE,
   ];
   // Family Comp Parents.
-  $form['familyHistory']['familyComp']['parents'] = [
+  $form['family_history']['family_comp']['parents'] = [
     '#type' => 'fieldset',
     '#title' => 'Parents',
   ];
-  $form['familyHistory']['familyComp']['parents']['parent_1'] = [
+  $form['family_history']['family_comp']['parents']['parent_1'] = [
     '#type' => 'select',
     '#options' => [
       'Father' => 'Father',
       'Mother' => 'Mother',
-    ],
+      ],
+        '#default_value' => (isset($record['parent_1']) && $_GET['id']) ? $record['parent_1']: 'Father',
   ];
-  $form['familyHistory']['familyComp']['parents']['parent_2'] = [
+  $form['family_history']['family_comp']['parents']['parent_2'] = [
     '#type' => 'select',
     '#options' => [
       'Father' => 'Father',
       'Mother' => 'Mother',
     ],
-    '#default_value' => 'Mother',
+      '#default_value' => (isset($record['parent_2']) && $_GET['id']) ? $record['parent_2']: 'Mother',
   ];
   // Family Comp - Parent(s) Name.
-  $form['familyHistory']['familyComp']['parents']['name'] = [
+  $form['family_history']['family_comp']['parents']['name'] = [
     '#type' => 'fieldset',
     '#title' => 'Name',
   ];
-  $form['familyHistory']['familyComp']['parents']['name']['parent_1_name'] = [
+  $form['family_history']['family_comp']['parents']['name']['parent_1_name'] = [
     '#type' => 'textfield',
     '#required' => TRUE,
+    '#default_value' => (isset($record['parent_1_name']) && $_GET['id']) ? $record['parent_1_name']:'',
   ];
-  $form['familyHistory']['familyComp']['parents']['name']['parent_2_name'] = [
+  $form['family_history']['family_comp']['parents']['name']['parent_2_name'] = [
     '#type' => 'textfield',
     '#required' => TRUE,
+    '#default_value' => (isset($record['parent_2_name']) && $_GET['id']) ? $record['parent_2_name']:'',
   ];
-
+  // Family Comp - Parent(s) Occupation.
+  $form['family_history']['family_comp']['parents']['occupation'] = [
+    '#type' => 'fieldset',
+    '#title' => 'Occupation',
+  ];
+  $form['family_history']['family_comp']['parents']['occupation']['parent_1_occupation'] = [
+    '#type' => 'textfield',
+    '#required' => TRUE,
+    '#default_value' => (isset($record['parent_1']) && $_GET['id']) ? $record['parent_1_occupation']: '',
+  ];
+  $form['family_history']['family_comp']['parents']['occupation']['parent_2_occupation'] = [
+    '#type' => 'textfield',
+    '#required' => TRUE,
+    '#default_value' => (isset($record['parent_2']) && $_GET['id']) ? $record['parent_2_occupation']: '',
+  ];
+  // Family Comp - Parent(s) Education.
+  $form['family_history']['family_comp']['parents']['education'] = [
+    '#type' => 'fieldset',
+    '#title' => 'Education',
+  ];
+  $form['family_history']['family_comp']['parents']['education']['parent_1_education'] = [
+    '#type' => 'textfield',
+    '#required' => TRUE,
+    '#default_value' => (isset($record['parent_1_education']) && $_GET['id']) ? $record['parent_1_education']: '',
+  ];
+  $form['family_history']['family_comp']['parents']['education']['parent_2_education'] = [
+    '#type' => 'textfield',
+    '#required' => TRUE,
+    '#default_value' => (isset($record['parent_2_education']) && $_GET['id']) ? $record['parent_2_education']: '',
+  ];
+  // Family Comp - Parent(s) General Health.
+  $form['family_history']['family_comp']['parents']['health'] = [
+    '#type' => 'fieldset',
+    '#title' => 'General Health',
+  ];
+  $form['family_history']['family_comp']['parents']['health']['parent_1_health'] = [
+    '#type' => 'textfield',
+    '#required' => TRUE,
+    '#default_value' => (isset($record['parent_1_health']) && $_GET['id']) ? $record['parent_1_health']: '',
+  ];
+  $form['family_history']['family_comp']['parents']['health']['parent_2_health'] = [
+    '#type' => 'textfield',
+    '#required' => TRUE,
+    '#default_value' => (isset($record['parent_2_health']) && $_GET['id']) ? $record['parent_2_health']: '',
+  ];
+  // Family Comp - Sibling(s)
+  $form['family_history']['family_comp']['siblings'] = [
+    '#type' => 'fieldset',
+    '#title' => t('Siblings'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  ];
+  $form['family_history']['family_comp']['siblings']['siblings_none'] = [
+    '#type' => 'checkbox',
+    '#title' => 'None',
+    '#default_value' => (isset($record['siblings_none']) && $_GET['id']) ? $record['siblings_none']: 0,
+  ];
+  // Family Comp - Sibling(s) Names & Ages.
+  $form['family_history']['family_comp']['siblings']['names_ages'] = [
+    '#type' => 'fieldset',
+    '#title' => t('Names & Ages'),
+    '#attributes' => array('class' =>[
+      'class' => 'siblings'
+    ]),
+  ];
+  $form['family_history']['family_comp']['siblings']['names_ages']['brothers']['brothers_number'] = [
+    '#type' => 'textfield',
+    '#title' => t('# of brothers: '),
+    '#default_value' => (isset($record['brothers_number']) && $_GET['id']) ? $record['brothers_number']: 0,
+  ];
+  $form['family_history']['family_comp']['siblings']['names_ages']['brothers']['brothers_list'] = [
+    '#type' => 'textfield',
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+    '#default_value' => (isset($record['brother_list']) && $_GET['id']) ? $record['brother_list']: '',
+  ];
+  $form['family_history']['family_comp']['siblings']['names_ages']['sisters']['sisters_number'] = [
+    '#type' => 'textfield',
+    '#title' => t('# of sisters: '),
+    '#default_value' => (isset($record['sisters_number']) && $_GET['id']) ? $record['sisters_number']: 0,
+  ];
+  $form['family_history']['family_comp']['siblings']['names_ages']['sisters']['sisters_list'] = [
+    '#type' => 'textfield',
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+    '#default_value' => (isset($record['sisters_list']) && $_GET['id']) ? $record['sisters_list']: '',
+  ];
+  // Family Comp - Children.
+  $form['family_history']['family_comp']['children'] = [
+    '#type' => 'fieldset',
+    '#title' => t('Children'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  ];
+  $form['family_history']['family_comp']['children']['children_none'] = [
+    '#type' => 'checkbox',
+    '#title' => t('None'),
+    '#default_value' => (isset($record['children_none']) && $_GET['id']) ? $record['children_none']: 0,
+  ];
+  // Family Comp - Children Names & Ages.
+  $form['family_history']['family_comp']['children']['names_ages'] = [
+    '#type' => 'fieldset',
+    '#title' => t('Names & Ages'),
+    '#attributes' =>  array('class' =>[
+      'class' => 'children'
+    ]),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  ];
+  $form['family_history']['family_comp']['children']['names_ages']['sons']['sons_number'] = [
+    '#type' => 'textfield',
+    '#title' => t('# of sons: '),
+    '#default_value' => (isset($record['sons_number']) && $_GET['id']) ? $record['sons_number']:0,
+  ];
+  $form['family_history']['family_comp']['children']['names_ages']['sons']['sons_list'] = [
+    '#type' => 'textfield',
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+    '#default_value' => (isset($record['sons_list']) && $_GET['id']) ? $record['sons_list']:'',
+  ];
+  $form['family_history']['family_comp']['children']['names_ages']['daughters']['daughters_number'] = [
+    '#type' => 'textfield',
+    '#title' => t('# of daughters: '),
+    '#default_value' => (isset($record['daughters_number']) && $_GET['id']) ? $record['daughters_number']:0,
+  ];
+  $form['family_history']['family_comp']['children']['names_ages']['daughters']['daughters_list'] = [
+    '#type' => 'textfield',
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+    '#default_value' => (isset($record['daughters_list']) && $_GET['id']) ? $record['daughters_list']:'',
+  ];
+  //
+  // Parent's Marital Status
+  //
+  $form['family_history']['maritalStatus'] = [
+    '#type' => 'fieldset',
+    '#title' => t("Parent's Marital Status"),
+    '#attributes' =>  array('class' => [
+      'class' => 'maritalStatus',
+    ]),
+  ];
+  $form['family_history']['maritalStatus']['single'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Single, never married'),
+    '#default_value' => (isset($record['single']) && $_GET['id']) ? $record['single']:'',
+  ];
+  $form['family_history']['maritalStatus']['engaged'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Engaged'),
+    '#default_value' => (isset($record['engaged']) && $_GET['id']) ? $record['engaged']:'',
+  ];
+  $form['family_history']['maritalStatus']['married'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Married'),
+    '#default_value' => (isset($record['married']) && $_GET['id']) ? $record['married']:'',
+  ];
+  $form['family_history']['maritalStatus']['divorced'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Divorced'),
+    '#default_value' => (isset($record['divorced']) && $_GET['id']) ? $record['divorced']:'',
+  ];
+  $form['family_history']['maritalStatus']['seperated'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Seperated'),
+    '#default_value' => (isset($record['seperated']) && $_GET['id']) ? $record['seperated']:'',
+  ];
+  $form['family_history']['maritalStatus']['divorce_process'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Divorce in process'),
+    '#default_value' => (isset($record['divorce_process']) && $_GET['id']) ? $record['divorce_process']:'',
+  ];
+  $form['family_history']['maritalStatus']['livein'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Live-in'),
+    '#default_value' => (isset($record['livein']) && $_GET['id']) ? $record['livein']:'',
+  ];
+  $form['family_history']['maritalStatus']['selfmarriages'] = [
+    '#type' => 'checkbox',
+    '#title' => t('prior marriages (self)'),
+    '#default_value' => (isset($record['selfmarriages']) && $_GET['id']) ? $record['selfmarriages']:'',
+  ];
+  $form['family_history']['maritalStatus']['partnermarriages'] = [
+    '#type' => 'checkbox',
+    '#title' => t('prior marriages (partner)'),
+    '#default_value' => (isset($record['partnermarriages']) && $_GET['id']) ? $record['partnermarriages']:'',
+  ];
+  //
+  // General Questions Text Area
+  //
+  $form['family_history']['textarea'] = [
+    '#type' => 'fieldset',
+    '#default_value' => (isset($record['textarea']) && $_GET['id']) ? $record['textarea']:'',
+  ];
+  $form['family_history']['textarea']['general_textarea'] = [
+    '#type' => 'textarea',
+    '#default_value' => '',
+    '#default_value' => (isset($record['general_textarea']) && $_GET['id']) ? $record['general_textarea']:'',
+  ];
+  $form['family_history']['family_relations']['family_relationships_textarea'] = [
+    '#type' => 'textarea',
+    '#title' => t('Past or present relationship with family members:'),
+    '#default_value' => (isset($record['family_relationships_textarea']) && $_GET['id']) ? $record['family_relationships_textarea']:'',
+  ];
+  $form['family_history']['stressors']['checkboxes'] = [
+    '#type' => 'checkboxes',
+    '#title' => t('Stressors:'),
+    '#options' => [
+      'none' => t('None reported'),
+      'abuse' => t('Abuse'),
+      'illness' => t('Illness'),
+      'death' => t('Death'),
+      'move' => t('Move'),
+      'divorce' => t('Separation or divorce'),
+      'military' => t('Military Deployment'),
+      'other' => t('Other'),
+    ],
+  ];
+  $form['family_history']['stressors']['stressors_textarea'] = [
+    '#type' => 'textarea',
+    '#default_value' => (isset($record['stressors_textarea']) && $_GET['id']) ? $record['stressors_textarea']:'',
+  ];
+  $form['family_history']['mental_substance']['mental_textarea'] = [
+    '#type' => 'textarea',
+    '#title' => t('Family history of Mental Health Issues/Substance Abuse/Other::'),
+      '#default_value' => (isset($record['mental_textarea']) && $_GET['id']) ? $record['mental_textarea']:'',
+  ];
   # an html submit button for our drupal form
   $form['submit'] = array(
     '#type' => 'submit',
@@ -87,6 +315,6 @@ function family_history_form1($form_state) {
 # our drupal form submit handler (using a submit handler
 # given by the default naming convention, i.e.,
 # 'firstmodule_form1' plus '_submit')
-function family_history_form1_submit($form, &$form_state) {
-  drupal_set_message(t('The form has been submitted.'));
-}
+// function family_history_form1_submit($form, &$form_state) {
+//   drupal_set_message(t('The form has been submitted.'));
+// }
