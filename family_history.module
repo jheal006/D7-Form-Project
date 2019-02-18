@@ -13,3 +13,80 @@ function family_history_menu() {
   );
   return $items;
 }
+
+# the "callback" function; when the menu item or url is
+# accessed, this function will be called
+function family_history_form() {
+  return drupal_get_form('family_history_form1');
+}
+
+# our drupal form "form builder" function
+function family_history_form1($form_state) {
+
+  # an html textfield for our drupal form
+  $form['#attached']['library'][] = 'family_history/family_history';
+  //
+  // Family History
+  // .
+  $form['familyHistory'] = [
+    '#type' => 'fieldset',
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  ];
+  //
+  // Family Compisition
+  // .
+  $form['familyHistory']['familyComp'] = [
+    '#type' => 'fieldset',
+    '#title' => 'Family Composition',
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+  ];
+  // Family Comp Parents.
+  $form['familyHistory']['familyComp']['parents'] = [
+    '#type' => 'fieldset',
+    '#title' => 'Parents',
+  ];
+  $form['familyHistory']['familyComp']['parents']['parent_1'] = [
+    '#type' => 'select',
+    '#options' => [
+      'Father' => 'Father',
+      'Mother' => 'Mother',
+    ],
+  ];
+  $form['familyHistory']['familyComp']['parents']['parent_2'] = [
+    '#type' => 'select',
+    '#options' => [
+      'Father' => 'Father',
+      'Mother' => 'Mother',
+    ],
+    '#default_value' => 'Mother',
+  ];
+  // Family Comp - Parent(s) Name.
+  $form['familyHistory']['familyComp']['parents']['name'] = [
+    '#type' => 'fieldset',
+    '#title' => 'Name',
+  ];
+  $form['familyHistory']['familyComp']['parents']['name']['parent_1_name'] = [
+    '#type' => 'textfield',
+    '#required' => TRUE,
+  ];
+  $form['familyHistory']['familyComp']['parents']['name']['parent_2_name'] = [
+    '#type' => 'textfield',
+    '#required' => TRUE,
+  ];
+
+  # an html submit button for our drupal form
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Submit',
+  );
+  return $form;
+}
+
+# our drupal form submit handler (using a submit handler
+# given by the default naming convention, i.e.,
+# 'firstmodule_form1' plus '_submit')
+function family_history_form1_submit($form, &$form_state) {
+  drupal_set_message(t('The form has been submitted.'));
+}
