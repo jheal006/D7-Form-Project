@@ -1,0 +1,15 @@
+<?php
+
+# this function is the menu handler for our drupal form/module.
+# it is an implementation of the Drupal hook_menu function.
+function family_history_menu() {
+  $items = array();
+  $items['family_history/form'] = array(
+    'title' => t('Family Form'),
+    'page callback' => 'family_history_form',
+    'access arguments' => array('access content'),
+    'description' => t('Family History Form for Drupal 7'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
