@@ -1,0 +1,173 @@
+form {
+  background: white;
+  border: 1px solid #ccc;
+}
+
+tr {
+  line-height: 0;
+}
+
+textarea {
+  margin: 1px;
+  display: block;
+  border: 1px solid #a9a9a9;
+  width: 99%;
+  height: 50px;
+}
+
+
+a:hover,
+a:focus,
+a:visited {
+  text-decoration: none;
+  /* color: transparent; */
+  outline: 0 auto -webkit-focus-ring-color;
+}
+
+/* #edit-parent-1,
+#edit-parent-2 {
+  width:100px;
+} */
+
+#content .section {
+  background: #e9eff7;
+  margin: 1px;
+  border-left: 1px solid #e9eff7;
+  border-right: 1px solid #e9eff7;
+  width: 1000px;
+}
+.container {
+  background: #fff;
+  border-left: 1px solid #b8cbde;
+  border-right: 1px solid #b8cbde;
+  border-top: 1px solid #c2cedb;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.footer {
+  background: white;
+    height: 1px;
+    border-top: 1px solid #a5b3c5;
+    border-bottom: 2px solid #f3f8fa;
+}
+
+.container h2
+ {
+  font-size: 16px;
+  font-weight: bold;
+  background: #d2dfed;
+  border: 1px solid #cccccc;
+  padding-left: 2px;
+}
+
+.maritalStatus fieldset {
+  line-height: 1;
+  padding: 0px;
+  margin: -1px;
+}
+
+.maritalStatus input[type=checkbox] {
+  vertical-align: middle;
+}
+
+ /* .familyComp */
+ #edit-family-comp {
+  float: left;
+  border: 1px solid #cccccc;
+  margin: 10px 0 0 1px;
+  width: 64%;
+}
+
+#edit-textarea {
+  display: inline-block;
+}
+
+#edit-parents legend,
+#edit-siblings legend,
+#edit-children legend {
+  display: inline;
+  float: left;
+}
+
+#edit-parents #edit-parent-1,
+#edit-parents #edit-parent-2{
+  display: inline-block;
+  padding-left: 16%;
+  margin: 0;
+}
+
+#edit-parent-1,
+#edit-name .fieldset-wrapper input,
+#edit-occupation .fieldset-wrapper input,
+#edit-education .fieldset-wrapper input,
+#edit-health .fieldset-wrapper input {
+  float: left;
+  width: 35%;
+  margin: 0 10px;
+}
+
+.siblings legend .fieldset-legend,
+.children legend .fieldset-legend {
+  position: absolute;
+  display: inline-block;
+  width: 150px;
+  left: 300px;
+  margin-top: -33px;
+}
+
+.siblings .fieldset-wrapper .js-form-item label,
+.children .fieldset-wrapper .js-form-item label {
+  display: inline;
+}
+
+.siblings .fieldset-wrapper .form-item-brothers-number,
+.siblings .fieldset-wrapper .form-item-sisters-number,
+.children .fieldset-wrapper .form-item-sons-number,
+.children .fieldset-wrapper .form-item-daughters-number {
+  display: inline-block;
+}
+
+.siblings .fieldset-wrapper .js-form-item-brothers-list,
+.siblings .fieldset-wrapper .js-form-item-sisters-list,
+.children .fieldset-wrapper .js-form-item-sons-list,
+.children .fieldset-wrapper .js-form-item-daughters-list {
+  display: inline;
+  width: 140px;
+}
+
+.siblings .js-form-item input,
+.children .js-form-item input {
+  width: 65%;
+  margin-left: 25px;
+}
+
+#edit-names-ages #edit-brothers-number,
+#edit-names-ages #edit-sisters-number,
+#edit-children #edit-sons-number,
+#edit-children #edit-daughters-number {
+  width: 20px;
+}
+
+#edit-siblings .form-type-checkbox,
+#edit-children .form-type-checkbox {
+  display: inline;
+}
+
+#edit-checkboxes--wrapper legend {
+  display: inline;
+  float: left;
+}
+
+#edit-checkboxes .form-type-checkbox {
+  display: inline;
+}
+
+/* .maritalStatus */
+ #edit-maritalstatus {
+  float: right;
+  margin: 10px 15px 0 0;
+  border: 1px solid #cccccc;
+  width: 33%;
+  line-height: 1.4;
+}

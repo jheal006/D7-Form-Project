@@ -1,3 +1,5 @@
 name = Family History Form
-description = Family History Form for Drupal 7 
+description = Family History Form for Drupal 7
 core = 7.x
+stylesheets[all][] = css/reset.css
+stylesheets[all][] = css/form.css
