@@ -28,7 +28,7 @@ function family_history_form1($form_state) {
   //
   // Family History
   // .
-  $form['familyHistory'] = [
+  $form['family_history'] = [
     '#type' => 'fieldset',
     '#collapsible' => FALSE,
     '#collapsed' => FALSE,
@@ -36,7 +36,7 @@ function family_history_form1($form_state) {
   //
   // Family Compisition
   // .
-  $form['familyHistory']['familyComp'] = [
+  $form['family_history']['family_comp'] = [
     '#type' => 'fieldset',
     '#title' => 'Family Composition',
     '#collapsible' => FALSE,
