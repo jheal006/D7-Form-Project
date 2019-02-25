@@ -3,10 +3,6 @@ form {
   border: 1px solid #ccc;
 }
 
-tr {
-  line-height: 0;
-}
-
 textarea {
   margin: 1px;
   display: block;
