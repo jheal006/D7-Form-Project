@@ -25,20 +25,44 @@ function family_history_menu() {
     'access arguments' => array('submit family_history_form'),
     'page arguments' => array('family_history_form'),
   );
+  $items['family_history/entries'] = array(
+    'title' => t('Form Entries'),
+    'description' => t('List of Form Entries'),
+    'page callback' => 'entryList',
+    'access arguments' => array('submit family_history_form'),
+    'type' => MENU_LOCAL_TASK,
+  );
   return $items;
 }
 
-# the "callback" function; when the menu item or url is
-# accessed, this function will be called
-// function family_history_form() {
-//   return drupal_get_form('family_history_form');
-// }
+function entryList() {
+  $query = db_query("SELECT id FROM family_history");
+  $results = $query->fetchAll();
+  // Create the row element.
+  $rows = array();
+  foreach($results as $result) {
+    $rows[] = array(
+      'data' => [
+        '#form' => 'FORM # ' . $result->id,
+      ],
+    );
+  }
+
+  // Create the header.
+  $header = array('List of Forms', 'Edit', 'Delete');
+
+   $output = array(
+     '#theme' => 'table',    // Here you can write #type also instead of #theme.
+     '#header' => $header,
+     '#rows' => $rows,
+   );
+
+   return $output;
+}
+
 
 # our drupal form "form builder" function
 function family_history_form($form, &$form_state) {
-
-  # an html textfield for our drupal form
-  $form['#attached']['library'][] = 'family_history/family_history';
   //
   // Family History
   // .
@@ -330,14 +354,6 @@ function family_history_form($form, &$form_state) {
 }
 
 
-# our drupal form submit handler (using a submit handler
-# given by the default naming convention, i.e.,
-# 'firstmodule_form1' plus '_submit')
-// function family_history_form1_submit($form, &$form_state) {
-//   drupal_set_message(t('The form has been submitted.'));
-// }
-
-
 /**
  * {@inheritdoc}
  */
@@ -389,21 +405,20 @@ function family_history_form($form, &$form_state) {
       'family_relationships_textarea' => $retrieve['family_relationships_textarea'],
       'stressors_textarea' => $retrieve['stressors_textarea'],
     );
-  var_dump($retrieve['checkboxes']['none']);
   // $query = \Drupal::database();
-  $id = \Drupal::request()->query->get('id');
-  if (isset($id)) {
-    $query->update('family_history')
-        ->fields($fields)
-        ->condition('id', $id)
-        ->execute();
-        drupal_set_message("Succesfully Updated");
-               $form_state->setRedirect('family_history.entry_list');
-  } else {
+  // $id = \Drupal::request()->query->get('id');
+  // if (isset($id)) {
+  //   $query->update('family_history')
+  //       ->fields($fields)
+  //       ->condition('id', $id)
+  //       ->execute();
+  //       drupal_set_message("Succesfully Updated");
+  //              $form_state->setRedirect('family_history.entry_list');
+  // } else {
     db_insert('family_history')
         ->fields($fields)
         ->execute();
         drupal_set_message("Succesfully Saved");
-               $form_state->setRedirect('family_history.entry_list');
-  };
+               // $form_state->setRedirect('family_history.entry_list');
+  // };
 }
