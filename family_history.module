@@ -338,10 +338,6 @@ function family_history_form($form, &$form_state) {
 // }
 
 
-function validateForm($form, $form_state) {
-  print('<pre>'.print_r($form_state['values'],1).'</pre>');die();
-}
-
 /**
  * {@inheritdoc}
  */
@@ -395,19 +391,19 @@ function validateForm($form, $form_state) {
     );
   var_dump($retrieve['checkboxes']['none']);
   // $query = \Drupal::database();
-  // $id = \Drupal::request()->query->get('id');
-  // if (isset($id)) {
-  //   $query->update('family_history')
-  //       ->fields($fields)
-  //       ->condition('id', $id)
-  //       ->execute();
-  //       drupal_set_message("Succesfully Updated");
-  //              $form_state->setRedirect('family_history.entry_list');
-  // } else {
+  $id = \Drupal::request()->query->get('id');
+  if (isset($id)) {
+    $query->update('family_history')
+        ->fields($fields)
+        ->condition('id', $id)
+        ->execute();
+        drupal_set_message("Succesfully Updated");
+               $form_state->setRedirect('family_history.entry_list');
+  } else {
     db_insert('family_history')
         ->fields($fields)
         ->execute();
         drupal_set_message("Succesfully Saved");
-               // $form_state->setRedirect('family_history.entry_list');
-  // };
+               $form_state->setRedirect('family_history.entry_list');
+  };
 }
