@@ -1,27 +1,41 @@
 <?php
 
-# this function is the menu handler for our drupal form/module.
-# it is an implementation of the Drupal hook_menu function.
+/**
+* Implements hook _permission().
+*/
+function family_history_form_permission() {
+  return array(
+    'submit family_history_form' => array(
+      'title' => t('Submit family_history_form'),
+      'description' => t('Submit the family_history_form'),
+    ),
+  );
+}
+
+/**
+* Implements hook _menu().
+*/
 function family_history_menu() {
   $items = array();
   $items['family_history/form'] = array(
-    'title' => t('Family Form1'),
-    'page callback' => 'family_history_form',
-    'access arguments' => array('access content'),
+    'title' => t('Family Form'),
     'description' => t('Family History Form for Drupal 7'),
     'type' => MENU_CALLBACK,
+    'page callback' => 'drupal_get_form',
+    'access arguments' => array('submit family_history_form'),
+    'page arguments' => array('family_history_form'),
   );
   return $items;
 }
 
 # the "callback" function; when the menu item or url is
 # accessed, this function will be called
-function family_history_form() {
-  return drupal_get_form('family_history_form1');
-}
+// function family_history_form() {
+//   return drupal_get_form('family_history_form');
+// }
 
 # our drupal form "form builder" function
-function family_history_form1($form_state) {
+function family_history_form($form, &$form_state) {
 
   # an html textfield for our drupal form
   $form['#attached']['library'][] = 'family_history/family_history';
@@ -273,12 +287,13 @@ function family_history_form1($form_state) {
   ];
   $form['family_history']['textarea']['general_textarea'] = [
     '#type' => 'textarea',
-    '#default_value' => '',
+    '#value' => '',
     '#default_value' => (isset($record['general_textarea']) && $_GET['id']) ? $record['general_textarea']:'',
   ];
   $form['family_history']['family_relations']['family_relationships_textarea'] = [
     '#type' => 'textarea',
     '#title' => t('Past or present relationship with family members:'),
+    '#value' => '',
     '#default_value' => (isset($record['family_relationships_textarea']) && $_GET['id']) ? $record['family_relationships_textarea']:'',
   ];
   $form['family_history']['stressors']['checkboxes'] = [
@@ -297,11 +312,13 @@ function family_history_form1($form_state) {
   ];
   $form['family_history']['stressors']['stressors_textarea'] = [
     '#type' => 'textarea',
+    '#value' => '',
     '#default_value' => (isset($record['stressors_textarea']) && $_GET['id']) ? $record['stressors_textarea']:'',
   ];
   $form['family_history']['mental_substance']['mental_textarea'] = [
     '#type' => 'textarea',
     '#title' => t('Family history of Mental Health Issues/Substance Abuse/Other::'),
+    '#value' => '',
       '#default_value' => (isset($record['mental_textarea']) && $_GET['id']) ? $record['mental_textarea']:'',
   ];
   # an html submit button for our drupal form
@@ -312,9 +329,85 @@ function family_history_form1($form_state) {
   return $form;
 }
 
+
 # our drupal form submit handler (using a submit handler
 # given by the default naming convention, i.e.,
 # 'firstmodule_form1' plus '_submit')
 // function family_history_form1_submit($form, &$form_state) {
 //   drupal_set_message(t('The form has been submitted.'));
 // }
+
+
+function validateForm($form, $form_state) {
+  print('<pre>'.print_r($form_state['values'],1).'</pre>');die();
+}
+
+/**
+ * {@inheritdoc}
+ */
+
+ function family_history_form_submit($form, $form_state) {
+
+  $retrieve = $form_state['values'];
+
+  $fields = array(
+      'parent_1' => $retrieve['parent_1'],
+      'parent_2' => $retrieve['parent_2'],
+      'parent_1_name' => $retrieve['parent_1_name'],
+      'parent_2_name' => $retrieve['parent_2_name'],
+      'parent_1_occupation' => $retrieve['parent_1_occupation'],
+      'parent_2_occupation' => $retrieve['parent_2_occupation'],
+      'parent_1_education' => $retrieve['parent_1_education'],
+      'parent_2_education' => $retrieve['parent_2_education'],
+      'parent_1_health' => $retrieve['parent_1_health'],
+      'parent_2_health' => $retrieve['parent_2_health'],
+      'siblings' => $retrieve['siblings_none'],
+      'number_of_brothers' => $retrieve['brothers_number'],
+      'brothers_list' => $retrieve['brothers_list'],
+      'number_of_sisters' => $retrieve['sisters_number'],
+      'sisters_list' => $retrieve['sisters_list'],
+      'children' => $retrieve['children_none'],
+      'number_of_sons' => $retrieve['sons_number'],
+      'sons_list' => $retrieve['sons_list'],
+      'number_of_daughters' => $retrieve['daughters_number'],
+      'daughters_list' => $retrieve['daughters_list'],
+      'single' => $retrieve['single'],
+      'engaged' => $retrieve['engaged'],
+      'married' => $retrieve['married'],
+      'divorced' => $retrieve['divorced'],
+      'seperated' => $retrieve['seperated'],
+      'divorceprocess' => $retrieve['divorce_process'],
+      'livein' => $retrieve['livein'],
+      'selfmarriages' => $retrieve['selfmarriages'],
+      'partnermarriages' => $retrieve['partnermarriages'],
+      'general_textarea' => $retrieve['general_textarea'],
+      'mental_textarea' =>  $retrieve['mental_textarea'],
+      'family_stressors_none' => $retrieve['checkboxes']['none'] ? 1 : 0,
+      'family_stressors_abuse' => $retrieve['checkboxes']['abuse'] ? 1 : 0,
+      'family_stressors_illness' => $retrieve['checkboxes']['illness'] ? 1 : 0,
+      'family_stressors_death' => $retrieve['checkboxes']['death'] ? 1 : 0,
+      'family_stressors_move' => $retrieve['checkboxes']['move'] ? 1 : 0,
+      'family_stressors_divorce' => $retrieve['checkboxes']['divorce'] ? 1 : 0,
+      'family_stressors_military' => $retrieve['checkboxes']['military'] ? 1 : 0,
+      'family_stressors_other' => $retrieve['checkboxes']['other'] ? 1 : 0,
+      'family_relationships_textarea' => $retrieve['family_relationships_textarea'],
+      'stressors_textarea' => $retrieve['stressors_textarea'],
+    );
+  var_dump($retrieve['checkboxes']['none']);
+  // $query = \Drupal::database();
+  // $id = \Drupal::request()->query->get('id');
+  // if (isset($id)) {
+  //   $query->update('family_history')
+  //       ->fields($fields)
+  //       ->condition('id', $id)
+  //       ->execute();
+  //       drupal_set_message("Succesfully Updated");
+  //              $form_state->setRedirect('family_history.entry_list');
+  // } else {
+    db_insert('family_history')
+        ->fields($fields)
+        ->execute();
+        drupal_set_message("Succesfully Saved");
+               // $form_state->setRedirect('family_history.entry_list');
+  // };
+}
