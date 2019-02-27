@@ -6,8 +6,8 @@
 function family_history_form_permission() {
   return array(
     'submit family_history_form' => array(
-      'title' => t('Submit family_history_form'),
-      'description' => t('Submit the family_history_form'),
+      'title' => 'Submit family_history_form',
+      'description' => 'Submit the family_history_form',
     ),
   );
 }
@@ -18,22 +18,36 @@ function family_history_form_permission() {
 function family_history_menu() {
   $items = array();
   $items['family_history/form'] = array(
-    'title' => t('Family Form'),
-    'description' => t('Family History Form for Drupal 7'),
+    'title' => 'Family Form',
+    'description' => 'Family History Form for Drupal 7',
     'type' => MENU_CALLBACK,
     'page callback' => 'drupal_get_form',
     'access arguments' => array('submit family_history_form'),
     'page arguments' => array('family_history_form'),
   );
+  $items['family_history/form/%/edit'] = array(
+    'title' => 'Edit Family Form',
+    'description' => 'Edit Family History Form',
+    'type' => MENU_LOCAL_TASK,
+    // 'page callback' => 'drupal_get_form',
+    // 'page arguments' => array(2),
+    'access arguments' => array(
+      'access administration pages',
+    ),
+  );
   $items['family_history/entries'] = array(
-    'title' => t('Form Entries'),
-    'description' => t('List of Form Entries'),
+    'title' => 'Form Entries',
+    'description' => 'List of Form Entries',
     'page callback' => 'entryList',
-    'access arguments' => array('submit family_history_form'),
+    'access arguments' => array('family_history_form'),
     'type' => MENU_LOCAL_TASK,
   );
   return $items;
 }
+
+// function family_history_form_load($id) {
+//
+// }
 
 function entryList() {
   $query = db_query("SELECT id FROM family_history");
@@ -41,9 +55,13 @@ function entryList() {
   // Create the row element.
   $rows = array();
   foreach($results as $result) {
+    // Actions
+
     $rows[] = array(
       'data' => [
         '#form' => 'FORM # ' . $result->id,
+        '#edit' => l('Edit', 'family_history/form/'. $result->id .'/edit'),
+        '#delete' => l('Delete', ''),
       ],
     );
   }
@@ -63,6 +81,18 @@ function entryList() {
 
 # our drupal form "form builder" function
 function family_history_form($form, &$form_state) {
+
+  $url_comp = explode('/', request_uri());
+  $id = $url_comp[3];
+
+  if (isset($id)) {
+    $results =  db_query("SELECT * FROM {family_history} WHERE id = :id", array(
+        ':id' => $id,
+      ))
+      ->fetchObject();
+      $record = json_decode(json_encode($results), True);
+      // var_dump( $results);
+  }
   //
   // Family History
   // .
@@ -109,7 +139,7 @@ function family_history_form($form, &$form_state) {
   $form['family_history']['family_comp']['parents']['name']['parent_1_name'] = [
     '#type' => 'textfield',
     '#required' => TRUE,
-    '#default_value' => (isset($record['parent_1_name']) && $_GET['id']) ? $record['parent_1_name']:'',
+    '#default_value' => (array_key_exists('parent_1_name', $record)) ? $record['parent_1_name'] : '',
   ];
   $form['family_history']['family_comp']['parents']['name']['parent_2_name'] = [
     '#type' => 'textfield',
