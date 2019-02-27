@@ -81,9 +81,12 @@ function entryList() {
 
 # our drupal form "form builder" function
 function family_history_form($form, &$form_state) {
-
+  $record = [];
   $url_comp = explode('/', request_uri());
-  $id = $url_comp[3];
+  if (isset($url_comp[3])) {
+    $id = $url_comp[3];
+  };
+
 
   if (isset($id)) {
     $results =  db_query("SELECT * FROM {family_history} WHERE id = :id", array(
@@ -91,7 +94,6 @@ function family_history_form($form, &$form_state) {
       ))
       ->fetchObject();
       $record = json_decode(json_encode($results), True);
-      // var_dump( $results);
   }
   //
   // Family History
@@ -435,20 +437,24 @@ function family_history_form($form, &$form_state) {
       'family_relationships_textarea' => $retrieve['family_relationships_textarea'],
       'stressors_textarea' => $retrieve['stressors_textarea'],
     );
-  // $query = \Drupal::database();
-  // $id = \Drupal::request()->query->get('id');
-  // if (isset($id)) {
-  //   $query->update('family_history')
-  //       ->fields($fields)
-  //       ->condition('id', $id)
-  //       ->execute();
-  //       drupal_set_message("Succesfully Updated");
-  //              $form_state->setRedirect('family_history.entry_list');
-  // } else {
+
+  $url_comp = explode('/', request_uri());
+  if (array_key_exists(3, $url_comp)) {
+    $id = $url_comp[3];
+  };
+
+  if (isset($id)) {
+    db_update('family_history')
+        ->fields($fields)
+        ->condition('id', $id)
+        ->execute();
+        drupal_set_message("Succesfully Updated");
+               // $form_state->setRedirect('family_history.entry_list');
+  } else {
     db_insert('family_history')
         ->fields($fields)
         ->execute();
         drupal_set_message("Succesfully Saved");
                // $form_state->setRedirect('family_history.entry_list');
-  // };
+  };
 }
