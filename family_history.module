@@ -449,12 +449,12 @@ function family_history_form($form, &$form_state) {
         ->condition('id', $id)
         ->execute();
         drupal_set_message("Succesfully Updated");
-               // $form_state->setRedirect('family_history.entry_list');
+        drupal_goto('/family_history/entries');
   } else {
     db_insert('family_history')
         ->fields($fields)
         ->execute();
         drupal_set_message("Succesfully Saved");
-               // $form_state->setRedirect('family_history.entry_list');
+        drupal_goto('/family_history/entries');
   };
 }
