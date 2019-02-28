@@ -35,6 +35,14 @@ function family_history_menu() {
       'access administration pages',
     ),
   );
+  $items['family_history/entries/%/delete'] = array(
+    'title' => 'Delete Family Form',
+    'description' => 'Delete Family History Form',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('delete_survey_record_confirm'),
+    'access arguments' => array('administer users'),
+    'type' => MENU_LOCAL_TASK,
+  );
   $items['family_history/entries'] = array(
     'title' => 'Form Entries',
     'description' => 'List of Form Entries',
@@ -44,10 +52,6 @@ function family_history_menu() {
   );
   return $items;
 }
-
-// function family_history_form_load($id) {
-//
-// }
 
 function entryList() {
   $query = db_query("SELECT id FROM family_history");
@@ -61,7 +65,7 @@ function entryList() {
       'data' => [
         '#form' => 'FORM # ' . $result->id,
         '#edit' => l('Edit', 'family_history/form/'. $result->id .'/edit'),
-        '#delete' => l('Delete', ''),
+        '#delete' => l('Delete', 'family_history/entries/'. $result->id .'/delete'),
       ],
     );
   }
@@ -78,12 +82,53 @@ function entryList() {
    return $output;
 }
 
+/**
+ * Delete Survey Record Confirmation
+ */
+function delete_survey_record_confirm($form, &$form_state){
+  $url_comp = explode('/', request_uri());
+    $id = $url_comp[3];
+
+  //die($id);
+  $form['delete'] = array(
+    '#type' => 'value',
+    '#value' => $id,
+  );
+  return confirm_form(
+    $form,
+    t('Are you sure you want to delete form %id?', array('%id' => $id)),
+    'family_history/entries/',
+    t('This action cannot be undone.'),
+    t('Delete'),
+    t('Cancel')
+  );
+
+
+}
+/**
+ * Delete Survey Record Function
+ */
+function delete_survey_record_confirm_submit($form, &$form_state) {
+  $url_comp = explode('/', request_uri());
+  $id = $url_comp[3];
+  var_dump("WTF IS THE ID?", $id);
+  if (isset($id)) {
+    db_delete('family_history')
+      ->condition('id', $id)
+      ->execute();
+    drupal_set_message('The record has been deleted!');
+  } else {
+    var_dump('WTF?');
+  }
+  drupal_goto('/family_history/entries');
+}
+
 
 # our drupal form "form builder" function
 function family_history_form($form, &$form_state) {
   $record = [];
   $url_comp = explode('/', request_uri());
-  if (isset($url_comp[3])) {
+  if (array_key_exists(3, $url_comp)) {
     $id = $url_comp[3];
   };
 
