@@ -27,10 +27,9 @@ function family_history_menu() {
   );
   $items['family_history/form/%/edit'] = array(
     'title' => 'Edit Family Form',
-    'description' => 'Edit Family History Form',
-    'type' => MENU_LOCAL_TASK,
-    // 'page callback' => 'drupal_get_form',
-    // 'page arguments' => array(2),
+    'description' => 'Edit Family History Form'
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('family_history_form', 2),
     'access arguments' => array(
       'access administration pages',
     ),
@@ -39,7 +38,7 @@ function family_history_menu() {
     'title' => 'Delete Family Form',
     'description' => 'Delete Family History Form',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('delete_survey_record_confirm'),
+    'page arguments' => array('delete_survey_record_confirm', 2),
     'access arguments' => array('administer users'),
     'type' => MENU_LOCAL_TASK,
   );
@@ -85,9 +84,10 @@ function entryList() {
 /**
  * Delete Survey Record Confirmation
  */
-function delete_survey_record_confirm($form, &$form_state){
-  $url_comp = explode('/', request_uri());
-    $id = $url_comp[3];
+function delete_survey_record_confirm($form, $form_state, $id){
+  // $url_comp = explode('/', request_uri());
+  //   $id = $url_comp[3];
+
 
   //die($id);
   $form['delete'] = array(
@@ -109,23 +109,21 @@ function delete_survey_record_confirm($form, &$form_state){
  * Delete Survey Record Function
  */
 function delete_survey_record_confirm_submit($form, &$form_state) {
-  $url_comp = explode('/', request_uri());
-  $id = $url_comp[3];
-  var_dump("WTF IS THE ID?", $id);
+  $id = $form_state['build_info']['args'][0];
   if (isset($id)) {
     db_delete('family_history')
       ->condition('id', $id)
       ->execute();
-    drupal_set_message('The record has been deleted!');
+    drupal_set_message('Form has been deleted!');
   } else {
-    var_dump('WTF?');
+    var_dump('No dice');
   }
   drupal_goto('/family_history/entries');
 }
 
 
 # our drupal form "form builder" function
-function family_history_form($form, &$form_state) {
+function family_history_form($form, &$form_state, $id = NULL) {
   $record = [];
   $url_comp = explode('/', request_uri());
   if (array_key_exists(3, $url_comp)) {
@@ -483,11 +481,9 @@ function family_history_form($form, &$form_state) {
       'stressors_textarea' => $retrieve['stressors_textarea'],
     );
 
-  $url_comp = explode('/', request_uri());
-  if (array_key_exists(3, $url_comp)) {
-    $id = $url_comp[3];
-  };
-
+  // Retrieves Form # from URL
+  $id = $form_state['build_info']['args'][0];
+  
   if (isset($id)) {
     db_update('family_history')
         ->fields($fields)
